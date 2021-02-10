@@ -1,0 +1,20 @@
+# Configuration file for git hooks example
+
+github_bugid="#[0-9]+"
+jira_bugid="(IDPT|SURF)-[0-9]+"
+bugid="(${github_bugid}|${jira_bugid})"
+
+## Allow push to branches
+## Used in grep commad, so you can use regexp
+CONFIG_ALLOW_BRANCHES=(
+    "/feature/[a-z0-9].+"
+    "/bug/[a-z0-9].+"
+    "/hotfix/[a-z0-9].+"
+)
+
+## List of requirements for commit message
+## Used in grep commad, so you can use regexp
+CONFIG_COMMIT_MESSAGE_REQUIREMENTS=(
+    "${bugid} [A-Z0-9].+"
+)
+

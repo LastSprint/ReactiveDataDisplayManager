@@ -176,3 +176,24 @@ If you have cells with equal sizes, you should choose `BaseCollectionCellGenerat
 But if you cell's should have different sizes in **one dimension**, you should use `SizableCollectionCollectionDataDisplayManager` and calculatable collection generators.
 
 Otherwise you should provide your own adapter with collectionView delegate.
+
+### Contributions
+
+You can find the roadmap in file `ROADMAP.md`.
+If you'd like to contribute, please feel free to create a PR.
+
+Before you commit and push, make sure that you do it according to the rules:
+
+* Your commit message really describes what it does
+* At the beginning of the commit message there is a bug ID for example:
+
+    `#42 Example commit message`
+
+* You can push only in `feature|bug|hotfix/<branch-name>`
+
+Install `githooks` before contributing:
+
+```bash
+git clone --depth=1 https://github.com/surfstudio/githooks.git ~/.githooks
+echo "export PATH=~/.githooks:\$PATH" >> ~/.bashrc
+```
