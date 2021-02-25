@@ -154,7 +154,8 @@ open class GravityTableManager: BaseTableManager {
     open func replace(oldGenerator: CellGeneratorType,
                       on newGenerator: CellGeneratorType,
                       removeAnimation: UITableView.RowAnimation = .automatic,
-                      insertAnimation: UITableView.RowAnimation = .automatic) {
+                      insertAnimation: UITableView.RowAnimation = .automatic,
+                      completion: (() -> Void)? = nil) {
         guard let index = self.findGenerator(oldGenerator), let table = self.view else { return }
 
         animator?.perform(in: table) { [weak self] in
@@ -163,6 +164,7 @@ open class GravityTableManager: BaseTableManager {
             let indexPath = IndexPath(row: index.generatorIndex, section: index.sectionIndex)
             table.deleteRows(at: [indexPath], with: removeAnimation)
             table.insertRows(at: [indexPath], with: insertAnimation)
+            completion?()
         }
     }
 

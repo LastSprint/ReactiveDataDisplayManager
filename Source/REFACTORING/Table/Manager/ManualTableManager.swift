@@ -306,10 +306,12 @@ public class ManualTableManager: BaseTableManager {
     ///   - newGenerator: Generator that should be added instead an old generator.
     ///   - removeAnimation: Animation for remove action.
     ///   - insertAnimation: Animation for insert action.
+    ///   - completion: A completion handler block to execute when all of the operations are finished
     open func replace(oldGenerator: TableCellGenerator,
                       on newGenerator: TableCellGenerator,
                       removeAnimation: UITableView.RowAnimation = .automatic,
-                      insertAnimation: UITableView.RowAnimation = .automatic) {
+                      insertAnimation: UITableView.RowAnimation = .automatic,
+                      completion: (() -> Void)? = nil) {
         guard let index = self.findGenerator(oldGenerator), let table = self.view else { return }
 
         animator?.perform(in: table) { [weak self] in
@@ -318,6 +320,7 @@ public class ManualTableManager: BaseTableManager {
             let indexPath = IndexPath(row: index.generatorIndex, section: index.sectionIndex)
             table.deleteRows(at: [indexPath], with: removeAnimation)
             table.insertRows(at: [indexPath], with: insertAnimation)
+            completion?()
         }
     }
 

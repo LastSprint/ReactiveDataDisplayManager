@@ -94,12 +94,18 @@ open class BaseTableManager: DataDisplayManager, TableGeneratorsProvider {
     /// A constant that identifies a relative position in the table view (top, middle, bottom)
     /// for row when scrolling concludes. See UITableViewScrollPosition for descriptions of valid constants.
     ///   - needRemoveEmptySection: Pass **true** if you need to remove section if it'll be empty after deleting.
-    open func remove(_ generator: TableCellGenerator, with animation: UITableView.RowAnimation, needScrollAt scrollPosition: UITableView.ScrollPosition?, needRemoveEmptySection: Bool) {
+    ///   - completion: A completion handler block to execute when all of the operations are finished
+    open func remove(_ generator: TableCellGenerator,
+                     with animation: UITableView.RowAnimation = .automatic,
+                     needScrollAt scrollPosition: UITableView.ScrollPosition? = nil,
+                     needRemoveEmptySection: Bool = false,
+                     completion: (() -> Void)? = nil) {
         guard let index = findGenerator(generator) else { return }
         self.removeGenerator(with: index,
                              with: animation,
                              needScrollAt: scrollPosition,
-                             needRemoveEmptySection: needRemoveEmptySection)
+                             needRemoveEmptySection: needRemoveEmptySection,
+                             completion: completion)
     }
 
 }
@@ -120,9 +126,10 @@ extension BaseTableManager {
     func removeGenerator(with index: (sectionIndex: Int, generatorIndex: Int),
                          with animation: UITableView.RowAnimation = .automatic,
                          needScrollAt scrollPosition: UITableView.ScrollPosition? = nil,
-                         needRemoveEmptySection: Bool = false) {
+                         needRemoveEmptySection: Bool = false,
+                         completion: (() -> Void)? = nil) {
 
-        animator?.perform(in: view, animation: { [weak self] in
+        animator?.perform(in: view) { [weak self] in
             self?.generators[index.sectionIndex].remove(at: index.generatorIndex)
             let indexPath = IndexPath(row: index.generatorIndex, section: index.sectionIndex)
             view.deleteRows(at: [indexPath], with: animation)
@@ -139,7 +146,9 @@ extension BaseTableManager {
             if let scrollPosition = scrollPosition {
                 view.scrollToRow(at: indexPath, at: scrollPosition, animated: true)
             }
-        })
+
+            completion?()
+        }
     }
 
 }
