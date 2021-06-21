@@ -25,7 +25,7 @@ final class AlphabeticalTableViewController: UIViewController {
     // MARK: - Private Properties
 
     private let sectionTitleWrapper = TableSectionTitleWrapper()
-    private lazy var adapter = tableView.rddm.manualBuilder
+    private lazy var adapter = tableView.rddm.sectionedBuilder
         .add(featurePlugin: .sectionTitleDisplayable(titleWrapper: sectionTitleWrapper))
         .build()
 
@@ -53,8 +53,10 @@ private extension AlphabeticalTableViewController {
         Constants.alphabets.forEach {
             // Create header generator
             let headerGenerator = TitleHeaderGenerator(model: $0)
+            // Create footer generator
+            let footerGenerator = TitleFooterGenerator(model: "End of \($0)")
             // Add header generator into adapter
-            adapter.addSectionHeaderGenerator(headerGenerator)
+            adapter.addSection(.init(header: headerGenerator, footer: footerGenerator))
             // Add cell generators into adapter
             adapter.addCellGenerators(makeCellGenerators())
         }

@@ -21,11 +21,6 @@ public class SPMTableViewCell: UITableViewCell {
 
 extension SPMTableViewCell: ConfigurableItem {
 
-    /// For support SPM
-    public static func bundle() -> Bundle? {
-        return Bundle.module
-    }
-
     public func configure(with model: String) {
         titleLabel.text = model
     }

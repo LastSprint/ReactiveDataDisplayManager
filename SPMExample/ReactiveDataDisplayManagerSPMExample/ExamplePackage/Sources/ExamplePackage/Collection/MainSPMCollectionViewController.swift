@@ -51,7 +51,7 @@ private extension MainSPMCollectionViewController {
 
     func fillAdapter() {
         let header = SPMHeaderCollectionGenerator(title: "Section header")
-        adapter.addSectionHeaderGenerator(header)
+        adapter.addSection(.init(header: header, footer: nil))
 
         for title in titles {
             let generator = SPMCollectionViewCell.rddm.baseGenerator(with: title)

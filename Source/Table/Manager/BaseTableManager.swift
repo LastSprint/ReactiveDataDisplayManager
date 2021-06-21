@@ -16,6 +16,7 @@ open class BaseTableManager: DataDisplayManager, TableGeneratorsProvider {
     public typealias CollectionType = UITableView
     public typealias CellGeneratorType = TableCellGenerator
     public typealias HeaderGeneratorType = TableHeaderGenerator
+    public typealias SectionType = TableSection
 
     // MARK: - Public properties
 
@@ -24,7 +25,7 @@ open class BaseTableManager: DataDisplayManager, TableGeneratorsProvider {
     // swiftlint:enable implicitly_unwrapped_optional
 
     public var generators: [[TableCellGenerator]] = []
-    public var sections: [TableHeaderGenerator] = []
+    public var sections: [TableSection] = []
 
     var delegate: TableDelegate?
     var dataSource: TableDataSource?
@@ -41,7 +42,7 @@ open class BaseTableManager: DataDisplayManager, TableGeneratorsProvider {
             self.generators.append([TableCellGenerator]())
         }
         if sections.count <= 0 {
-            sections.append(EmptyTableHeaderGenerator())
+            sections.append(.empty())
         }
         // Add to last section
         let index = sections.count - 1

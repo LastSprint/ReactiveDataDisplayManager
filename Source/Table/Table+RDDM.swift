@@ -20,6 +20,10 @@ public extension DataDisplayWrapper where Base: UITableView {
         TableBuilder(view: base, manager: ManualTableManager())
     }
 
+    var sectionedBuilder: TableBuilder<SectionedTableManager> {
+        TableBuilder(view: base, manager: SectionedTableManager())
+    }
+
     var gravityBuilder: TableBuilder<GravityTableManager> {
         TableBuilder(view: base, manager: GravityTableManager())
     }

@@ -66,7 +66,7 @@ private extension ItemTitleCollectionViewController {
     /// This method is used to fill adapter
     func fillAdapter() {
         let header = TitleCollectionHeaderGenerator(title: "Header")
-        adapter.addSectionHeaderGenerator(header)
+        adapter.addSection(.init(header: header, footer: nil))
 
         for index in 0...50 {
             // Create generator

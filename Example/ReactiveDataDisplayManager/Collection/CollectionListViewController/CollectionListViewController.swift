@@ -45,7 +45,7 @@ private extension CollectionListViewController {
 
     func fillAdapter() {
         let header = HeaderCollectionListGenerator(title: "Section header")
-        adapter.addSectionHeaderGenerator(header)
+        adapter.addSection(.init(header: header, footer: nil))
 
         for title in titles {
             let generator = TitleCollectionListCell.rddm.baseGenerator(with: title)

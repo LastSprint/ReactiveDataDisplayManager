@@ -66,7 +66,7 @@ extension FlowCollectionDelegate: UICollectionViewDelegateFlowLayout {
                              layout collectionViewLayout: UICollectionViewLayout,
                              referenceSizeForHeaderInSection section: Int) -> CGSize {
 
-        if let size = manager?.sections[section].size(collectionView, forSection: section) {
+        if let size = manager?.sections[section].header?.size(collectionView, forSection: section) {
             return size
         }
 
@@ -81,7 +81,7 @@ extension FlowCollectionDelegate: UICollectionViewDelegateFlowLayout {
                              layout collectionViewLayout: UICollectionViewLayout,
                              referenceSizeForFooterInSection section: Int) -> CGSize {
 
-        if let size = manager?.footers[section].size(collectionView, forSection: section) {
+        if let size = manager?.sections[section].footer?.size(collectionView, forSection: section) {
             return size
         }
 

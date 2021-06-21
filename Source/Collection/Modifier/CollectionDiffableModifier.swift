@@ -16,6 +16,7 @@ class CollectionDiffableModifier: Modifier<UICollectionView, CollectionItemAnima
 
     typealias CellGeneratorType = CollectionCellGenerator & DiffableItemSource
     typealias HeaderGeneratorType = CollectionHeaderGenerator & DiffableItemSource
+    typealias FooterGeneratorType = CollectionFooterGenerator & DiffableItemSource
 
     // MARK: - Properties
 
@@ -119,22 +120,24 @@ private extension CollectionDiffableModifier {
         guard let provider = provider else { return nil }
 
         assert(provider.generators is [[CellGeneratorType]], "This strategy support only \(CellGeneratorType.Type.self)")
-        assert(provider.sections is [HeaderGeneratorType], "This strategy support only \(HeaderGeneratorType.Type.self)")
+        assert(provider.sections.map { $0.header } is [HeaderGeneratorType], "This strategy support only \(HeaderGeneratorType.Type.self)")
+        assert(provider.sections.map { $0.footer } is [FooterGeneratorType], "This strategy support only \(FooterGeneratorType.Type.self)")
 
-        guard
-            let sections = provider.sections as? [HeaderGeneratorType],
-            let generators = provider.generators as? [[CellGeneratorType]]
+        guard let generators = provider.generators as? [[CellGeneratorType]]
         else { return nil }
 
         var snapshot = DiffableSnapshot()
 
-        for (index, section) in sections.enumerated() {
-            snapshot.appendSections([section.item])
+        for (index, section) in provider.sections.enumerated() {
+
+            guard let headerItem = (section.header as? HeaderGeneratorType)?.item else { continue }
+
+            snapshot.appendSections([headerItem])
 
             guard let generators = generators[safe: index] else { continue }
 
             let items = generators.map { $0.item }
-            snapshot.appendItems(items, toSection: section.item)
+            snapshot.appendItems(items, toSection: headerItem)
         }
 
         return snapshot

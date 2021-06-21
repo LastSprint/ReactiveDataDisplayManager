@@ -81,11 +81,13 @@ extension BaseCollectionDataSource {
         case UICollectionView.elementKindSectionHeader:
             return provider
                 .sections[indexPath.section]
-                .generate(collectionView: collectionView, for: indexPath)
+                .header?
+                .generate(collectionView: collectionView, for: indexPath) ?? UICollectionReusableView()
         case UICollectionView.elementKindSectionFooter:
             return provider
-                .footers[indexPath.section]
-                .generate(collectionView: collectionView, for: indexPath)
+                .sections[indexPath.section]
+                .footer?
+                .generate(collectionView: collectionView, for: indexPath) ?? UICollectionReusableView()
         default:
             return UICollectionReusableView()
         }

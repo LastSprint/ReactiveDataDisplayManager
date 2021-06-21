@@ -56,7 +56,7 @@ private extension SwipeableCollectionListViewController {
         let header = HeaderCollectionListGenerator(title: "Section header")
 
         // Add the header generator into adapter
-        adapter.addSectionHeaderGenerator(header)
+        adapter.addSection(.init(header: header, footer: nil))
 
         for title in Constants.titles {
             // Create cell generator

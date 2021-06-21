@@ -8,5 +8,5 @@
 
 public protocol TableGeneratorsProvider: AnyObject {
     var generators: [[TableCellGenerator]] { get set }
-    var sections: [TableHeaderGenerator] { get set }
+    var sections: [TableSection] { get set }
 }

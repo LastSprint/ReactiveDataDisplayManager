@@ -152,8 +152,6 @@ extension BaseTableDataDisplayManager: DataDisplayManager {
 
 extension BaseTableDataDisplayManager: HeaderDataDisplayManager {
 
-    // TODO: Implement in BaseCollectionDDM
-
     public func addCellGenerators(_ generators: [TableCellGenerator], toHeader header: TableHeaderGenerator) {
         generators.forEach { $0.registerCell(in: view) }
 

@@ -17,6 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		018E2820267CD81B0001FC8C /* Source */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Source; path = ../Source; sourceTree = "<group>"; };
 		41040B7726111B6A008BFFDA /* ExamplePackage */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ExamplePackage; sourceTree = "<group>"; };
 		41E1578E26111A3300E5E4BF /* ReactiveDataDisplayManagerSPMExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ReactiveDataDisplayManagerSPMExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		41E1579126111A3300E5E4BF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -43,6 +44,7 @@
 		41040B792611200C008BFFDA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				018E2820267CD81B0001FC8C /* Source */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";

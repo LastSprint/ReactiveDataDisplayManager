@@ -8,23 +8,8 @@
 
 import UIKit
 
-open class TableHeaderGenerator: ViewGenerator {
-
-    public let uuid = UUID().uuidString
-
-    public init() { }
-
-    open func generate() -> UIView {
-        preconditionFailure("\(#function) must be overriden in child")
-    }
-
-    open func height(_ tableView: UITableView, forSection section: Int) -> CGFloat {
-        preconditionFailure("\(#function) must be overriden in child")
-    }
-}
-
 /// Protocol that incapsulated type of current cell
-public protocol TableCellGenerator: AnyObject {
+public protocol TableCellGenerator: ViewRegistableItem {
 
     /// Nib type, which create this generator
     var identifier: String { get }
@@ -49,60 +34,10 @@ public protocol TableCellGenerator: AnyObject {
     ///
     /// Default implementation returns nil
     var estimatedCellHeight: CGFloat? { get }
-
-    /// Method for SPM support
-    ///
-    /// If you use SPM return Bundle.module
-    static func bundle() -> Bundle?
-}
-
-public extension TableCellGenerator {
-
-    static func bundle() -> Bundle? {
-        return nil
-    }
-
-}
-
-/// Protocol that incapsulated type of Header
-public protocol CollectionHeaderGenerator: AnyObject {
-
-    var identifier: UICollectionReusableView.Type { get }
-
-    func generate(collectionView: UICollectionView, for indexPath: IndexPath) -> UICollectionReusableView
-
-    func registerHeader(in collectionView: UICollectionView)
-
-    func size(_ collectionView: UICollectionView, forSection section: Int) -> CGSize
-
-    /// Method for SPM support
-    ///
-    /// If you use SPM return Bundle.module
-    static func bundle() -> Bundle?
-}
-
-public extension CollectionHeaderGenerator {
-
-    static func bundle() -> Bundle? {
-        return nil
-    }
-
-}
-
-/// Protocol that incapsulated type of Footer
-public protocol CollectionFooterGenerator: AnyObject {
-
-    var identifier: UICollectionReusableView.Type { get }
-
-    func generate(collectionView: UICollectionView, for indexPath: IndexPath) -> UICollectionReusableView
-
-    func registerFooter(in collectionView: UICollectionView)
-
-    func size(_ collectionView: UICollectionView, forSection section: Int) -> CGSize
 }
 
 /// Protocol that incapsulated type of current cell
-public protocol CollectionCellGenerator: AnyObject {
+public protocol CollectionCellGenerator: ViewRegistableItem {
 
     /// Nib type, which create this generator
     var identifier: String { get }
@@ -117,19 +52,6 @@ public protocol CollectionCellGenerator: AnyObject {
     ///
     /// - Parameter in: CollectionView, in which cell will be registered
     func registerCell(in collectionView: UICollectionView)
-
-    /// Method for SPM support
-    /// 
-    /// If you use SPM return Bundle.module
-    static func bundle() -> Bundle?
-}
-
-public extension CollectionCellGenerator {
-
-    static func bundle() -> Bundle? {
-        return nil
-    }
-
 }
 
 /// Protocol that incapsulated build logics for current View
@@ -246,46 +168,6 @@ public extension CollectionCellGenerator where Self: ViewBuilder {
 
 }
 
-/// Protocol that incapsulated type of Header cell
-public extension CollectionHeaderGenerator where Self: ViewBuilder {
-    func generate(collectionView: UICollectionView, for indexPath: IndexPath) -> UICollectionReusableView {
-        guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader,
-                                                                           withReuseIdentifier: self.identifier.nameOfClass,
-                                                                           for: indexPath) as? Self.ViewType else {
-            return UICollectionReusableView()
-        }
-
-        self.build(view: header)
-
-        return header as? UICollectionReusableView ?? UICollectionReusableView()
-    }
-
-    func registerHeader(in collectionView: UICollectionView) {
-        collectionView.registerNib(self.identifier,
-                                   kind: UICollectionView.elementKindSectionHeader,
-                                   bundle: Self.bundle())
-    }
-}
-
-/// Protocol that incapsulated type of Footer cell
-public extension CollectionFooterGenerator where Self: ViewBuilder {
-    func generate(collectionView: UICollectionView, for indexPath: IndexPath) -> UICollectionReusableView {
-        guard let footer = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionFooter,
-                                                                           withReuseIdentifier: self.identifier.nameOfClass,
-                                                                           for: indexPath) as? Self.ViewType else {
-            return UICollectionReusableView()
-        }
-
-        self.build(view: footer)
-
-        return footer as? UICollectionReusableView ?? UICollectionReusableView()
-    }
-
-    func registerFooter(in collectionView: UICollectionView) {
-        collectionView.registerNib(self.identifier, kind: UICollectionView.elementKindSectionFooter)
-    }
-}
-
 /// Protocol that incapsulated type of current cell
 public protocol StackCellGenerator: AnyObject {
     func generate(stackView: UIStackView, index: Int) -> UIView
@@ -306,19 +188,3 @@ public protocol Gravity: AnyObject {
 }
 
 public typealias GravityTableCellGenerator = TableCellGenerator & GravityItem
-
-open class GravityTableHeaderGenerator: TableHeaderGenerator, GravityItem {
-    open var heaviness = 0
-
-    open func getHeaviness() -> Int {
-        preconditionFailure("\(#function) must be overriden in child")
-    }
-}
-
-// MARK: - Equatable
-
-extension GravityTableHeaderGenerator: Equatable {
-    public static func == (lhs: GravityTableHeaderGenerator, rhs: GravityTableHeaderGenerator) -> Bool {
-        return lhs.generate() == rhs.generate() && lhs.getHeaviness() == rhs.getHeaviness()
-    }
-}

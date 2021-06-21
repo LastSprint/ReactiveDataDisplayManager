@@ -21,9 +21,4 @@ class SPMCollectionViewCell: UICollectionViewCell, ConfigurableItem {
         titleLabel.text = title
     }
 
-    /// For support SPM
-    static func bundle() -> Bundle? {
-        return Bundle.module
-    }
-
 }

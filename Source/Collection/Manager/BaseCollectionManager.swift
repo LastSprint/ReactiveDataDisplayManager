@@ -14,6 +14,7 @@ open class BaseCollectionManager: DataDisplayManager, CollectionGeneratorsProvid
 
     public typealias CollectionType = UICollectionView
     public typealias CellGeneratorType = CollectionCellGenerator
+    public typealias SectionType = CollectionSection
     public typealias HeaderGeneratorType = CollectionHeaderGenerator
     public typealias FooterGeneratorType = CollectionFooterGenerator
 
@@ -26,8 +27,7 @@ open class BaseCollectionManager: DataDisplayManager, CollectionGeneratorsProvid
     // swiftlint:enable implicitly_unwrapped_optional
 
     public var generators: [[CollectionCellGenerator]] = []
-    public var sections: [CollectionHeaderGenerator] = []
-    public var footers: [CollectionFooterGenerator] = []
+    public var sections: [CollectionSection] = []
 
     var delegate: CollectionDelegate?
     var dataSource: CollectionDataSource?
@@ -46,11 +46,7 @@ open class BaseCollectionManager: DataDisplayManager, CollectionGeneratorsProvid
         }
 
         if sections.count <= 0 {
-            sections.append(EmptyCollectionHeaderGenerator())
-        }
-
-        if footers.count <= 0 {
-            footers.append(EmptyCollectionFooterGenerator())
+            sections.append(.empty())
         }
 
         // Add to last section
@@ -86,90 +82,6 @@ open class BaseCollectionManager: DataDisplayManager, CollectionGeneratorsProvid
 
     public func clearCellGenerators() {
         self.generators.removeAll()
-    }
-
-}
-
-// MARK: - HeaderDataDisplayManager
-
-extension BaseCollectionManager: HeaderDataDisplayManager {
-
-    public func addSectionHeaderGenerator(_ generator: CollectionHeaderGenerator) {
-        generator.registerHeader(in: view)
-        self.sections.append(generator)
-    }
-
-    public func addCellGenerator(_ generator: CollectionCellGenerator, toHeader header: CollectionHeaderGenerator) {
-        addCellGenerators([generator], toHeader: header)
-    }
-
-    public func addCellGenerators(_ generators: [CollectionCellGenerator], toHeader header: CollectionHeaderGenerator) {
-        generators.forEach { $0.registerCell(in: view) }
-
-        if self.generators.count != self.sections.count || sections.isEmpty {
-            self.generators.append([CollectionCellGenerator]())
-        }
-
-        if let index = self.sections.firstIndex(where: { $0 === header }) {
-            self.generators[index].append(contentsOf: generators)
-        }
-    }
-
-    public func removeAllGenerators(from header: CollectionHeaderGenerator) {
-        guard
-            let index = self.sections.firstIndex(where: { $0 === header }),
-            self.generators.count > index
-        else {
-            return
-        }
-
-        self.generators[index].removeAll()
-    }
-
-    public func clearHeaderGenerators() {
-        self.sections.removeAll()
-    }
-
-}
-
-// MARK: - FooterDataDisplayManager
-
-extension BaseCollectionManager: FooterDataDisplayManager {
-
-    public func addSectionFooterGenerator(_ generator: CollectionFooterGenerator) {
-        generator.registerFooter(in: view)
-        self.footers.append(generator)
-    }
-
-    public func addCellGenerator(_ generator: CollectionCellGenerator, toFooter footer: CollectionFooterGenerator) {
-        addCellGenerators([generator], toFooter: footer)
-    }
-
-    public func addCellGenerators(_ generators: [CollectionCellGenerator], toFooter footer: CollectionFooterGenerator) {
-        generators.forEach { $0.registerCell(in: view) }
-
-        if self.generators.count != self.footers.count || footers.isEmpty {
-            self.generators.append([CollectionCellGenerator]())
-        }
-
-        if let index = self.footers.firstIndex(where: { $0 === footer }) {
-            self.generators[index].append(contentsOf: generators)
-        }
-    }
-
-    public func removeAllGenerators(from footer: CollectionFooterGenerator) {
-        guard
-            let index = self.footers.firstIndex(where: { $0 === footer }),
-            self.generators.count > index
-        else {
-            return
-        }
-
-        self.generators[index].removeAll()
-    }
-
-    public func clearFooterGenerators() {
-        self.footers.removeAll()
     }
 
 }

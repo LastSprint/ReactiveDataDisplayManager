@@ -36,11 +36,6 @@ extension SPMHeaderCollectionGenerator: CollectionHeaderGenerator {
         return .zero
     }
 
-    /// For support SPM
-    static func bundle() -> Bundle? {
-        return Bundle.module
-    }
-
 }
 
 // MARK: - ViewBuilder

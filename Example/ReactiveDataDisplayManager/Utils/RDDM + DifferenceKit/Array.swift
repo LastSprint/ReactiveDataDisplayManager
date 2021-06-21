@@ -15,10 +15,10 @@ extension Array {
 
 }
 
-extension Array where Element == CollectionHeaderGenerator {
+extension Array where Element == CollectionSection {
 
     var asDiffableItemSources: [DiffableItemSource] {
-        return compactMap { $0 as? DiffableItemSource }
+        return compactMap { $0.header as? DiffableItemSource }
     }
 
 }

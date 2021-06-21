@@ -108,13 +108,9 @@ private extension CollectionCompositionalViewController {
     }
 
     func addHeaderFooterGenerator(header: String, footer: String) {
-        // Make header generator
-        let headerGenerator = TitleCollectionHeaderGenerator(title: header)
-        let footerGenerator = TitleIconCollectionFooterGenerator(title: footer)
 
-        // Add header generator into adapter
-        adapter.addSectionHeaderGenerator(headerGenerator)
-        adapter.addSectionFooterGenerator(footerGenerator)
+        adapter.addSection(.init(header: TitleCollectionHeaderGenerator(title: header),
+                                 footer: TitleIconCollectionFooterGenerator(title: footer)))
     }
 
 }
